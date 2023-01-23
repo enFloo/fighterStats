@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-x109m(hos2_+9rtsw73=-0&te+j@m8#gwnq-3+a!50rboqp)5*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -36,9 +36,18 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'api_events.apps.ApiEventsConfig',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'crispy_forms',
 ]
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,7 +64,7 @@ ROOT_URLCONF = 'fighter_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +75,16 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
 ]
 
 WSGI_APPLICATION = 'fighter_project.wsgi.application'
@@ -122,3 +141,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 320821072227-3rfgo6vofesbh8fbfop77dtclafk6a5h.apps.googleusercontent.com
+# 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
+
+SOCIALACCOUNT_PROVIDERS = {
+    'globus': {
+        'SCOPE': [
+            'openid',
+            'profile',
+            'email',
+            'urn:globus:auth:scope:transfer.api.globus.org:all'
+        ]
+    }
+}
+
+LOGIN_REDIRECT_URL = 'home'
